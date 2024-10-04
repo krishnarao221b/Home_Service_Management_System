@@ -1,0 +1,122 @@
+[
+    {
+        "Name": "Personal Training",
+        "Description": "One-on-one fitness training tailored to your individual goals and needs.",
+        "Price": 60,
+        "PictureUrl": "images/services/personal_training.png",
+        "ServiceCategoryId": 1,
+        "ServiceTypeId": 1
+    },
+    {
+        "Name": "Massage Therapy",
+        "Description": "Relaxing and therapeutic massage services to help you unwind and relieve stress.",
+        "Price": 80,
+        "PictureUrl": "images/services/massage_therapy.png",
+        "ServiceCategoryId": 1,
+        "ServiceTypeId": 2
+    },
+    {
+        "Name": "Elderly Care",
+        "Description": "Compassionate care services for the elderly, including companionship and assistance with daily activities.",
+        "Price": 70,
+        "PictureUrl": "images/services/elderly_care.png",
+        "ServiceCategoryId": 1,
+        "ServiceTypeId": 3
+    },
+    {
+        "Name": "House Cleaning",
+        "Description": "Comprehensive cleaning services for homes, including deep cleaning and regular maintenance.",
+        "Price": 100,
+        "PictureUrl": "images/services/cleaning.png",
+        "ServiceCategoryId": 2,
+        "ServiceTypeId": 1
+    },
+    {
+        "Name": "Carpet Cleaning",
+        "Description": "Professional carpet cleaning services to refresh and restore your carpets.",
+        "Price": 90,
+        "PictureUrl": "images/services/carpet_cleaning.png",
+        "ServiceCategoryId": 2,
+        "ServiceTypeId": 2
+    },
+    {
+        "Name": "Window Cleaning",
+        "Description": "Expert window cleaning services for a streak-free shine on your home or office windows.",
+        "Price": 70,
+        "PictureUrl": "images/services/window_cleaning.png",
+        "ServiceCategoryId": 2,
+        "ServiceTypeId": 3
+    },
+    {
+        "Name": "Plumbing Service",
+        "Description": "Professional plumbing services for leak repairs, installations, and emergency calls.",
+        "Price": 80,
+        "PictureUrl": "images/services/plumbing.png",
+        "ServiceCategoryId": 3,
+        "ServiceTypeId": 1
+    },
+    {
+        "Name": "Electrician Service",
+        "Description": "Expert electrical services for installations, repairs, and safety inspections.",
+        "Price": 90,
+        "PictureUrl": "images/services/electrician.png",
+        "ServiceCategoryId": 3,
+        "ServiceTypeId": 2
+    },
+    {
+        "Name": "Handyman Service",
+        "Description": "General repairs and maintenance tasks, including furniture assembly and minor renovations.",
+        "Price": 60,
+        "PictureUrl": "images/services/handyman.png",
+        "ServiceCategoryId": 3,
+        "ServiceTypeId": 3
+    },
+    {
+        "Name": "Moving Assistance",
+        "Description": "Reliable moving help for packing, loading, and unloading your belongings safely.",
+        "Price": 150,
+        "PictureUrl": "images/services/moving.png",
+        "ServiceCategoryId": 4,
+        "ServiceTypeId": 1
+    },
+    {
+        "Name": "Grocery Delivery",
+        "Description": "Convenient grocery delivery service to get your essentials delivered right to your door.",
+        "Price": 25,
+        "PictureUrl": "images/services/grocery_delivery.png",
+        "ServiceCategoryId": 4,
+        "ServiceTypeId": 2
+    },
+    {
+        "Name": "Taxi Service",
+        "Description": "Safe and reliable taxi services for local and long-distance travel.",
+        "Price": 30,
+        "PictureUrl": "images/services/taxi_service.png",
+        "ServiceCategoryId": 4,
+        "ServiceTypeId": 3
+    },
+    {
+        "Name": "Hair Styling",
+        "Description": "Expert hair styling services for all occasions, including cuts, colors, and treatments.",
+        "Price": 50,
+        "PictureUrl": "images/services/hair_styling.png",
+        "ServiceCategoryId": 5,
+        "ServiceTypeId": 1
+    },
+    {
+        "Name": "Makeup Application",
+        "Description": "Professional makeup services for events, parties, and special occasions.",
+        "Price": 70,
+        "PictureUrl": "images/services/makeup_application.png",
+        "ServiceCategoryId": 5,
+        "ServiceTypeId": 2
+    },
+    {
+        "Name": "Nail Care",
+        "Description": "Manicure and pedicure services for beautifully groomed nails.",
+        "Price": 40,
+        "PictureUrl": "images/services/nail_care.png",
+        "ServiceCategoryId": 5,
+        "ServiceTypeId": 3
+    }
+]
