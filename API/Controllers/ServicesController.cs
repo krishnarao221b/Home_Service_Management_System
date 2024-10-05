@@ -8,6 +8,7 @@ using Core.Specifications;
 using API.Dtos;
 using AutoMapper;
 using API.Errors;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -30,14 +31,21 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ServiceToReturnDto>>> GetServices()
+        public async Task<ActionResult<Pagination<ServiceToReturnDto>>> GetServices(
+            [FromQuery]ServiceSpecParams serviceParams)
         {
-            var spec = new ServicesWithTypesAndCategoriesSpecification();
+            var spec = new ServicesWithTypesAndCategoriesSpecification(serviceParams);
+
+            var countSpec = new ServiceWithFiltersForCountSpecification(serviceParams);
+
+            var totalItems = await _servicesRepo.CountAsync(spec);
             
             var services = await _servicesRepo.ListAsync(spec);
 
-            return Ok(_mapper
-                .Map<IReadOnlyList<Service>, IReadOnlyList<ServiceToReturnDto>>(services));
+            var data =_mapper
+                .Map<IReadOnlyList<Service>, IReadOnlyList<ServiceToReturnDto>>(services);
+
+            return Ok(new Pagination<ServiceToReturnDto>(serviceParams.PageIndex, serviceParams.PageSize, totalItems, data));
         }
 
         [HttpGet("{id}")]

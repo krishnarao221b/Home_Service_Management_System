@@ -2,6 +2,7 @@ using API.Errors;
 using API.Extensions;
 using API.Helpers;
 using API.Middleware;
+using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,13 @@ internal class Program
         
         builder.Services.AddSwaggerDocumentation();
 
+        builder.Services.AddCors(opt =>
+        {
+            opt.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+            });
+        });
 
         var app = builder.Build();
 
@@ -48,6 +56,8 @@ internal class Program
 
         app.UseRouting();
         app.UseStaticFiles();
+
+        app.UseCors("CorsPolicy");
 
         app.UseAuthorization();
 
