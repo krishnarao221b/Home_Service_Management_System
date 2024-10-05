@@ -1,17 +1,17 @@
 ﻿using Infrastructure.Data;
 using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
 using Core.Specifications;
 using API.Dtos;
 using AutoMapper;
+using API.Errors;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ServicesController : ControllerBase    
+    public class ServicesController : BaseApiController    
     {
         private readonly IGenericRepository<Service> _servicesRepo;
         private readonly IGenericRepository<ServiceCategory> _serviceCategoryRepo;
@@ -41,10 +41,14 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ServiceToReturnDto>> GetService(int id)
         {
             var spec = new ServicesWithTypesAndCategoriesSpecification(id);
             var service =  await _servicesRepo.GetEntityWithSpec(spec);
+
+            if(service == null) return NotFound(new ApiResponse(404));
 
             return _mapper.Map<Service, ServiceToReturnDto>(service);
         }
