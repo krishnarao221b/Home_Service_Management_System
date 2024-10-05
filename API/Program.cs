@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ internal class Program
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+        builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+        builder.Services.AddAutoMapper(typeof(MappingProfiles));
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -28,6 +31,9 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseRouting();
+        app.UseStaticFiles();
 
         app.UseAuthorization();
 

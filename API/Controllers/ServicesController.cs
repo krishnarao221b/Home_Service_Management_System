@@ -3,6 +3,9 @@ using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
+using Core.Specifications;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -10,38 +13,52 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ServicesController : ControllerBase    
     {
-        private readonly IServiceRepository _repo;
+        private readonly IGenericRepository<Service> _servicesRepo;
+        private readonly IGenericRepository<ServiceCategory> _serviceCategoryRepo;
+        private readonly IGenericRepository<ServiceType> _serviceTypeRepo;
+        private readonly IMapper _mapper;
 
-        public ServicesController(IServiceRepository repo)
+        public ServicesController(IGenericRepository<Service> servicesRepo,
+            IGenericRepository<ServiceCategory> serviceCategoryRepo, IGenericRepository<ServiceType> serviceTypeRepo,
+            IMapper mapper)
         {
-            _repo = repo;
+            _servicesRepo = servicesRepo;
+            _serviceCategoryRepo = serviceCategoryRepo;
+            _serviceTypeRepo = serviceTypeRepo;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Service>>> GetServices()
+        public async Task<ActionResult<IReadOnlyList<ServiceToReturnDto>>> GetServices()
         {
-            var service = await _repo.GetServicesAsync();
+            var spec = new ServicesWithTypesAndCategoriesSpecification();
+            
+            var services = await _servicesRepo.ListAsync(spec);
 
-            return Ok(service);
+            return Ok(_mapper
+                .Map<IReadOnlyList<Service>, IReadOnlyList<ServiceToReturnDto>>(services));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Service>> GetService(int id)
+        public async Task<ActionResult<ServiceToReturnDto>> GetService(int id)
         {
-            return await _repo.GetServiceByIdAsync(id);
+            var spec = new ServicesWithTypesAndCategoriesSpecification(id);
+            var service =  await _servicesRepo.GetEntityWithSpec(spec);
+
+            return _mapper.Map<Service, ServiceToReturnDto>(service);
         }
 
         [HttpGet("categories")]
         public async Task<ActionResult<IReadOnlyList<ServiceCategory>>> GetServiceCategories()
         {
-            return Ok(await _repo.GetServiceCategoriesAsync());
+            return Ok(await _serviceCategoryRepo.ListAllAsync());
         }
 
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ServiceType>>> GetServiceTypes()
         {
-            return Ok(await _repo.GetServiceTypesAsync());
+            return Ok(await _serviceTypeRepo.ListAllAsync());
         }
 
     }
