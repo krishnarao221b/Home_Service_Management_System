@@ -9,9 +9,9 @@ namespace Core.Specifications
     public class ServiceSpecParams
     {
 
-        private const int MaxPageSize = 50;
+        private const int MaxPageSize = 500;
         public int PageIndex { get; set; } = 1;
-        private int _pageSize = 6;
+        private int _pageSize = 15;
         public int PageSize
         {
             get => _pageSize;
@@ -19,9 +19,9 @@ namespace Core.Specifications
         }
         public int? CategoryId { get; set; }
         public int? TypeId { get; set; }
-        public string Sort { get; set; }
-        private string _search;
-        public string Search
+        public string? Sort { get; set; }
+        private string? _search;
+        public string? Search
         {
             get => _search;
             set => _search = value.ToLower();
