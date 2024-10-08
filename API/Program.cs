@@ -5,11 +5,13 @@ using API.Middleware;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
@@ -22,6 +24,14 @@ internal class Program
         builder.Services.AddDbContext<ServiceContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+        // Updated code to use builder.Configuration instead of _config
+        builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
+            var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+            return ConnectionMultiplexer.Connect(configuration);
+        });
+
+        builder.Services.AddSingleton<RedisConnectionTest>();
+
 
         builder.Services.AddAutoMapper(typeof(MappingProfiles));
         builder.Services.AddControllers();
@@ -29,14 +39,25 @@ internal class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        
+
         builder.Services.AddSwaggerDocumentation();
 
         builder.Services.AddCors(opt =>
         {
             opt.AddPolicy("CorsPolicy", policy =>
             {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200",
+                  "https://localhost:4200",
+                  "http://127.0.0.1:4200",
+                  "https://127.0.0.1:4200",
+                  "http://localhost:7015",
+                  "https://localhost:7015",
+                  "http://127.0.0.1:7015",
+                  "https://127.0.0.1:7015",
+                  "http://localhost:5092",
+                  "https://localhost:5092",
+                  "http://127.0.0.1:5092",
+                  "https://127.0.0.1:5092").AllowCredentials();
             });
         });
 
