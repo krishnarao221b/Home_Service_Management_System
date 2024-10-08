@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';  // Use CommonModule instead of BrowserModule
 import { NavBarComponent } from './core/nav-bar/nav-bar.component';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,6 +8,8 @@ import { IService } from './shared/models/service';
 import { IPagination } from './shared/models/pagination';
 import { CoreModule } from './core/core.module'
 import { ShopModule } from './shop/shop.module';
+import { HomeModule } from './home/home.module';
+import { routes } from './app.routes';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,8 @@ import { ShopModule } from './shop/shop.module';
     RouterOutlet,
     CoreModule,
     HttpClientModule,
-    ShopModule
+    HomeModule,
+  
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

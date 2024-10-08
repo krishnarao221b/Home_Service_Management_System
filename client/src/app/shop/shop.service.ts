@@ -5,6 +5,7 @@ import { ICategory } from '../shared/models/category';
 import { IType } from '../shared/models/serviceType';
 import { map } from 'rxjs/operators';
 import { ShopParams } from '../shared/models/shopParams';
+import { IService } from '../shared/models/service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,11 @@ export class ShopService {
         })
       );
   }
+
+  getService(id: number) {
+    return this.http.get<IService>(this.baseUrl + 'services/' + id);
+  }
+
 
   getCategories() {
     return this.http.get<ICategory[]>(this.baseUrl + 'services/categories');

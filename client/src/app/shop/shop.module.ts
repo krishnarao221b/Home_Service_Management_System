@@ -4,6 +4,9 @@ import { ShopComponent } from './shop.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ServiceItemComponent } from './service-item/service-item.component';
 import { SharedModule } from '../shared/shared.module';
+import { ServiceDetailsComponent } from './service-details/service-details.component';
+import { RouterModule } from '@angular/router';
+import { ShopRoutingModule } from './shop-routing.module';
 
 
 
@@ -14,8 +17,10 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     HttpClientModule,
     ServiceItemComponent,
-    SharedModule
+    SharedModule,
+    ServiceDetailsComponent,
+    ShopRoutingModule
   ],
-  exports: [ShopComponent, HttpClientModule]
+  exports: [HttpClientModule]
 })
 export class ShopModule { }
