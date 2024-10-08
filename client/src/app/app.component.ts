@@ -3,13 +3,16 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';  // Use CommonModule instead of BrowserModule
 import { NavBarComponent } from './core/nav-bar/nav-bar.component';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IService } from './shared/models/service';
 import { IPagination } from './shared/models/pagination';
 import { CoreModule } from './core/core.module'
 import { ShopModule } from './shop/shop.module';
 import { HomeModule } from './home/home.module';
 import { routes } from './app.routes';
+import { SectionHeaderComponent } from './core/section-header/section-header.component';
+import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 
 @Component({
   selector: 'app-root',
@@ -20,10 +23,13 @@ import { routes } from './app.routes';
     CoreModule,
     HttpClientModule,
     HomeModule,
+    SectionHeaderComponent,
+    NgxSpinnerModule
   
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}]
 })
 export class AppComponent implements OnInit {
   title = 'Home Service';

@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
+
+
+import { SectionHeaderComponent } from './section-header/section-header.component';
 
 
 
@@ -12,8 +16,11 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     NavBarComponent,
     HttpClientModule,
-    RouterModule
+    BreadcrumbComponent,
+    BreadcrumbItemDirective,
+    RouterModule,
+    SectionHeaderComponent
   ],
-  exports : [NavBarComponent]
+  exports : [NavBarComponent, SectionHeaderComponent]
 })
 export class CoreModule { }

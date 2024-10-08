@@ -6,7 +6,7 @@ import { ServiceDetailsComponent } from './service-details/service-details.compo
 
 const routes: Routes = [
   { path: '', component: ShopComponent },
-  { path: ':id', component: ServiceDetailsComponent },
+  { path: ':id', component: ServiceDetailsComponent, data: { breadcrumb: {alias: 'serviceDetails'} } },
 
 ];
 
