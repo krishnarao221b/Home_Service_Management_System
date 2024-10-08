@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "ngx-bootstrap": "^18.0.2",
+    "ngx-pagination": "^6.0.3"
+  }
+}

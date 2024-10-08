@@ -7,6 +7,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IService } from './shared/models/service';
 import { IPagination } from './shared/models/pagination';
 import { CoreModule } from './core/core.module'
+import { ShopModule } from './shop/shop.module';
 
 @Component({
   selector: 'app-root',
@@ -15,28 +16,19 @@ import { CoreModule } from './core/core.module'
     CommonModule,  // Replacing BrowserModule with CommonModule
     RouterOutlet,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
+    ShopModule
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   title = 'Home Service';
-  services: IService[] = [];  // Initialize with an empty array
-
-  constructor(private http: HttpClient) { }
+ 
+  constructor() { }
 
   ngOnInit(): void {
-    const sort = 'Desc';  // Example sort parameter (modify as per your requirement)
-    const search = '';
 
-    this.http.get<IPagination>('http://localhost:5092/api/services').subscribe({
-      next: (response: IPagination) => {
-        this.services = response.data;
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+
   }
 }
