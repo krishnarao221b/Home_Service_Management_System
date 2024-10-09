@@ -12,7 +12,8 @@ import { HomeModule } from './home/home.module';
 import { routes } from './app.routes';
 import { SectionHeaderComponent } from './core/section-header/section-header.component';
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
-import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
+
+import { BasketService } from './basket/basket.service';
 
 @Component({
   selector: 'app-root',
@@ -28,16 +29,23 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
   
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}]
+  styleUrls: ['./app.component.scss']
+/*  providers: [{provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}]*/
 })
 export class AppComponent implements OnInit {
   title = 'Home Service';
  
-  constructor() { }
+  constructor(private basketService: BasketService) { }
 
   ngOnInit(): void {
-
+    const basketId = localStorage.getItem('basket_id');
+    if (basketId) {
+      this.basketService.getBasket(basketId).subscribe(() => {
+        console.log('initialized basket');
+      }, error => {
+        console.log(error)
+      });
+    }
 
   }
 }

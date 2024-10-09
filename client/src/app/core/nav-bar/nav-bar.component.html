@@ -10,10 +10,11 @@
 
     </nav>
     <div class="d-flex align-items-center">
-      <a class = "position-relative mx-3">
-        <i class="fa fa-shopping-cart fa-2x text-dark"></i>
-        <div class="cart-no">5</div>
-      </a>
+<a routerLink="/basket" class="position-relative mx-3">
+  <i class="fa fa-shopping-cart fa-2x text-dark"></i>
+  <div *ngIf="(basket$ | async) as basket" class="cart-no position-absolute" style="top: -10px; right: -15px;">{{basket.items.length}}</div>
+</a>
+
         <a class="btn btn-outline-secondary mx-3">Login</a>
         <a class="btn btn-outline-secondary ml-2">Sign up</a>
     </div>
