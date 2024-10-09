@@ -3,9 +3,11 @@ using API.Extensions;
 using API.Helpers;
 using API.Middleware;
 using Core.Entities;
+using Core.Entities.Identity;
 using Core.Interfaces;
 using Infrastructure.Data;
-using Infrastructure.Services;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,7 @@ using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
-internal class Program
+public class Program
 {
     private static async Task Main(string[] args)
     {
@@ -24,18 +26,22 @@ internal class Program
         builder.Services.AddDbContext<ServiceContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+        builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+
         // Updated code to use builder.Configuration instead of _config
         builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
             var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
             return ConnectionMultiplexer.Connect(configuration);
         });
 
-        builder.Services.AddSingleton<RedisConnectionTest>();
 
 
         builder.Services.AddAutoMapper(typeof(MappingProfiles));
         builder.Services.AddControllers();
         builder.Services.AddApplicationServices();
+
+        builder.Services.AddIdentityServices(builder.Configuration);
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -79,13 +85,14 @@ internal class Program
 
         app.UseCors("CorsPolicy");
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
 
         await MigrateDatabaseAsync(app);
 
-        app.Run();
+        await app.RunAsync();
 
         static async Task MigrateDatabaseAsync(IHost app)
         {
@@ -98,6 +105,13 @@ internal class Program
                     var context = services.GetRequiredService<ServiceContext>();
                     await context.Database.MigrateAsync();
                     await ServiceContextSeed.SeedAsync(context, loggerFactory);
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+                    await identityContext.Database.MigrateAsync();
+                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+
+
                 }
                 catch (Exception ex)
                 {

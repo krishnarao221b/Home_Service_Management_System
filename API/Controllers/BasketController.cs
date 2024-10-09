@@ -1,6 +1,5 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,15 +7,14 @@ namespace API.Controllers
     public class BasketController : BaseApiController
     {
 
-        private readonly RedisConnectionTest _redisConnectionTest;
 
 
         private readonly IBasketRepository _basketRepository;
 
-        public BasketController(IBasketRepository basketRepository, RedisConnectionTest redisConnectionTest)
+        public BasketController(IBasketRepository basketRepository )
         {
             _basketRepository = basketRepository;
-            _redisConnectionTest = redisConnectionTest;
+
         }
 
         [HttpGet]
@@ -50,20 +48,6 @@ namespace API.Controllers
             await _basketRepository.DeleteBasketAsync(id);
         }
 
-        [HttpGet("test-connection")]
-        public async Task<IActionResult> TestRedisConnection()
-        {
-            var isConnected = await _redisConnectionTest.TestConnectionAsync();
-
-            if (isConnected)
-            {
-                return Ok("Connected to Redis successfully!");
-            }
-            else
-            {
-                return StatusCode(500, "Failed to connect to Redis.");
-            }
-        }
 
         [HttpGet("test-redis-update")]
         public async Task<IActionResult> TestRedisUpdate()
