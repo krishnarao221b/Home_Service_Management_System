@@ -7,6 +7,8 @@ import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
 
 
 import { SectionHeaderComponent } from './section-header/section-header.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -19,7 +21,9 @@ import { SectionHeaderComponent } from './section-header/section-header.componen
     BreadcrumbComponent,
     BreadcrumbItemDirective,
     RouterModule,
-    SectionHeaderComponent
+    SectionHeaderComponent,
+    SharedModule,
+    BsDropdownModule
   ],
   exports : [NavBarComponent, SectionHeaderComponent]
 })

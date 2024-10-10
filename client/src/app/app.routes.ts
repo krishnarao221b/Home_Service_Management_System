@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
 import { ServiceDetailsComponent } from './shop/service-details/service-details.component';
 import { TestErrorComponent } from './core/test-error/test-error.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -20,8 +21,14 @@ export const routes: Routes = [
     data: { breadcrumb: 'Basket' }
   },
   {
-    path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule),
+    path: 'checkout',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule),
     data: { breadcrumb: 'Checkout' }
+  },
+  {
+    path: 'account', loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule),
+    data: { breadcrumb: {skip:true} }
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
