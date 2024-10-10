@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Entities.OrderAggregate;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Data
@@ -59,6 +60,22 @@ namespace Infrastructure.Data
 
                     await context.SaveChangesAsync();
                 }
+
+                if (!context.ServiceProvisions.Any())
+                {
+                    var spData =
+                        File.ReadAllText("../Infrastructure/Data/SeedData/serviceprovision.json");
+
+                    var provisions = JsonSerializer.Deserialize<List<ServiceProvision>>(spData);
+
+                    foreach (var item in provisions)
+                    {
+                        context.ServiceProvisions.Add(item);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
             }
             catch (Exception ex)
             {

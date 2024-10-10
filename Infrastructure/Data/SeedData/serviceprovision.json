@@ -1,0 +1,17 @@
+[
+  {
+    "ServiceDate": "Same Day",
+    "Description": "Fastest service",
+    "ExtraCharge": 10
+  },
+  {
+    "ServiceDate": "Within 3 Days",
+    "Description": "Normal service",
+    "ExtraCharge": 5
+  },
+  {
+    "ServiceDate": "Within 7 Days",
+    "Description": "Free! You get what you pay for",
+    "ExtraCharge": 0
+  }
+]
