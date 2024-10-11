@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    // Controller for simulating errors for testing purposes.
     public class BuggyController : BaseApiController
     {
         private readonly ServiceContext _context;
