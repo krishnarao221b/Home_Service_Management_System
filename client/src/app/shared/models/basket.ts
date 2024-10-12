@@ -27,7 +27,7 @@ export class Basket implements IBasket {
 }
 
 export interface IBasketTotals {
-  platformFees: number;
+  extraCharge: number;
   subtotal: number;
   total: number;
 }

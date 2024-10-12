@@ -1,34 +1,45 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { IService } from './shared/models/service';
-import { IPagination } from './shared/models/pagination';
+import { Router, RouterOutlet } from '@angular/router';
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BasketService } from './basket/basket.service';
 import { AccountService } from './account/account.service';
-import { Observable } from 'rxjs';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NavBarComponent } from './core/nav-bar/nav-bar.component';
+import { SectionHeaderComponent } from './core/section-header/section-header.component';
+import { OrdersComponent } from './orders/orders.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
-    CoreModule,
-    HttpClientModule,
-    HomeModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NavBarComponent,
+    SectionHeaderComponent,
+    OrdersComponent
+
+    // Only necessary imports should be here
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  //providers: [
+  //  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  //]
 })
 export class AppComponent implements OnInit {
   title = 'Home Service';
 
-  constructor(private basketService: BasketService, private accountService: AccountService) { }
+  constructor(
+    private basketService: BasketService,
+    private accountService: AccountService,
+    private toastr: ToastrService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadBasket();
@@ -44,6 +55,7 @@ export class AppComponent implements OnInit {
         }
       }, error => {
         console.log(error);
+        this.toastr.error('Failed to load user.');
       });
     }
   }
@@ -55,6 +67,7 @@ export class AppComponent implements OnInit {
         console.log('initialized basket');
       }, error => {
         console.log(error);
+        this.toastr.error('Failed to load basket.');
       });
     }
   }

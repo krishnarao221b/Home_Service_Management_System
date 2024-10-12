@@ -55,7 +55,9 @@ namespace API.Controllers
         {
 
             var user = await _userManager.FindByUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
-            
+
+            if (user == null) return NotFound(new ApiResponse(404, "User not found bro"));
+
             return _mapper.Map<Address, AddressDto>(user.Address);
         }
 
@@ -64,6 +66,9 @@ namespace API.Controllers
         public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto address)
         {
             var user = await _userManager.FindByUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
+
+            if (user == null) return NotFound(new ApiResponse(404, "User not found bro 2"));
+
             user.Address = _mapper.Map<AddressDto, Address>(address);
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded) return Ok(_mapper.Map<Address, AddressDto>(user.Address));
@@ -117,6 +122,23 @@ namespace API.Controllers
             };
         }
 
+        [HttpGet("debuguser")]
+        public async Task<ActionResult<UserDto>> DebugUser()
+        {
+            var user = await _userManager.FindByUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
 
+            if (user == null)
+            {
+                // Log or return a more descriptive error message
+                return BadRequest("User not found in the system bro 5");
+            }
+
+            return new UserDto
+            {
+                Email = user.Email,
+                Token = _tokenAsService.CreateToken(user),
+                DisplayName = user.DisplayName
+            };
+        }
     }
 }

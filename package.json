@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@angular/animations": "^18.2.7",
     "ngx-bootstrap": "^18.0.2",
     "ngx-pagination": "^6.0.3"
   }

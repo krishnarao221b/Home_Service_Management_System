@@ -2,15 +2,15 @@
   Order Summary
 </div>
 <div class="p-4">
-  <p class="font-italic mb-4">Shipping costs will be added depending on choices made during checkout</p>
+  <p class="font-italic mb-4">Extra charges will be added depending on choices made during checkout</p>
   <ul class="list-unstyled mb-4" *ngIf="(basketTotal$ | async)">
     <li class="d-flex justify-content-between py-3 border-bottom">
       <strong class="text-muted">Order subtotal</strong>
       <strong>{{(basketTotal$ | async)?.subtotal | currency : 'DKK '}}</strong>
     </li>
     <li class="d-flex justify-content-between py-3 border-bottom">
-      <strong class="text-muted">Platform fees</strong>
-      <strong>{{(basketTotal$ | async)?.platformFees | currency : 'DKK '}}</strong>
+      <strong class="text-muted">Extra Charge</strong>
+      <strong>{{(basketTotal$ | async)?.extraCharge | currency : 'DKK '}}</strong>
     </li>
     <li class="d-flex justify-content-between py-3 border-bottom">
       <strong class="text-muted">Total</strong>

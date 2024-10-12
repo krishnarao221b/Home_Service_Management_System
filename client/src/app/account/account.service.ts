@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, map } from 'rxjs';
 import { IUser } from '../shared/models/user';
 import { Router } from '@angular/router';
+import { IAddress } from '../shared/models/address';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
 export class AccountService {
   baseUrl = 'https://localhost:7015/api/';
 
-  private currentUserSource = new ReplaySubject<IUser | null>(1);
+ // private currentUserSource = new ReplaySubject<IUser | null>(1);
+  private currentUserSource: ReplaySubject<IUser | null> = new ReplaySubject<IUser | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -27,8 +29,11 @@ export class AccountService {
     return this.http.get<IUser>(this.baseUrl + 'account', { headers }).pipe(
       map((user: IUser) => {
         if (user) {
+          console.log('Loaded user:', user);
           localStorage.setItem('token', user.token);
           this.currentUserSource.next(user);
+        } else {
+          console.log('No user found bro 3');
         }
         return user; // Return the user for further processing
       })
@@ -42,7 +47,9 @@ export class AccountService {
       map((user: IUser) => {
         if (user) {
           localStorage.setItem('token', user.token);
+          console.log('Token after login:', localStorage.getItem('token'));
           this.currentUserSource.next(user);
+          console.log('Current user updated:', this.currentUserSource.next(user));
         }
         return user; 
       })
@@ -72,5 +79,14 @@ export class AccountService {
     );
   }
 
+  getUserAddress() {
+    const token = localStorage.getItem('token');
+    console.log('Token in getUserAddress:', token);
+
+    return this.http.get<IAddress>(this.baseUrl + 'account/address');
+  }
+  updateUserAddress(address: IAddress) {
+    return this.http.put<IAddress>(this.baseUrl + 'account/address', address);
+  }
 
 }

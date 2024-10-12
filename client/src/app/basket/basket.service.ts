@@ -4,6 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/models/basket';
 import { catchError, map } from 'rxjs/operators';
 import { IService } from '../shared/models/service';
+import { IServiceProvision } from '../shared/models/serviceProvision';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,16 @@ export class BasketService {
   baseUrl = 'https://localhost:7015/api/';
   private basketSource = new BehaviorSubject<IBasket>({ id: '', items: [] }); // Default initialization
   basket$ = this.basketSource.asObservable();
-  private basketTotalSource = new BehaviorSubject<IBasketTotals>({ platformFees: 0, subtotal: 0, total: 0 });
+  private basketTotalSource = new BehaviorSubject<IBasketTotals>({ extraCharge: 0, subtotal: 0, total: 0 });
   basketTotal$ = this.basketTotalSource.asObservable();
-
+  extraCharge = 0;
   
   constructor(private http: HttpClient) { }
+
+  setExtraCharge(serviceProvision: IServiceProvision) {
+    this.extraCharge = serviceProvision.extraCharge;
+    this.calculateTotals();
+  }
 
   getBasket(id: string) {
     //console.log('Basket ID:', id); 
@@ -99,10 +105,17 @@ export class BasketService {
     }
   }
 
+deleteLocalBasket(id: string) {
+  this.basketSource.next({ id: '', items: [] });
+  this.basketTotalSource.next({ extraCharge: 0, subtotal: 0, total: 0 });
+    localStorage.removeItem('basket_id');
+  }
+
+
   deleteBasket(basket: IBasket) {
     return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(() => {
       this.basketSource.next({ id: '', items: [] });  // Reset to empty basket
-      this.basketTotalSource.next({ platformFees: 0, subtotal: 0, total: 0 });  // Reset to empty totals
+      this.basketTotalSource.next({ extraCharge: 0, subtotal: 0, total: 0 });  // Reset to empty totals
       localStorage.removeItem('basket_id');
     }, error => {
       console.log(error);
@@ -114,10 +127,10 @@ export class BasketService {
 
   private calculateTotals(){
     const basket = this.getCurrentBasketValue();
-    const platformFees= 0;
+    const extraCharge = this.extraCharge;
     const subtotal = basket.items.reduce((a: number, b: IBasketItem) => (b.price * b.quantity) + a, 0);
-    const total = subtotal + platformFees;
-    this.basketTotalSource.next({ platformFees, total, subtotal });
+    const total = subtotal + extraCharge;
+    this.basketTotalSource.next({ extraCharge, total, subtotal });
 
   }
 

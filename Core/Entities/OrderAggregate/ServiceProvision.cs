@@ -8,6 +8,7 @@ namespace Core.Entities.OrderAggregate
 {
     public class ServiceProvision : BaseEntity
     {
+        public int Id { get; set; }
         public string ServiceDate { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 

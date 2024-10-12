@@ -11,6 +11,12 @@ namespace API.Extensions
         {
             var email = user?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
 
+            if (email == null)
+            {
+                Console.WriteLine("Email not found in ClaimsPrincipal");
+                return null; // or handle this scenario
+            }
+
             return await input.Users.Include(x => x.Address).SingleOrDefaultAsync(x => x.Email == email);
         }
 
