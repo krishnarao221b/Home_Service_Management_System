@@ -21,7 +21,8 @@ import { OrdersComponent } from './orders/orders.component';
     NgxSpinnerModule,
     NavBarComponent,
     SectionHeaderComponent,
-    OrdersComponent
+    OrdersComponent,
+
 
     // Only necessary imports should be here
   ],

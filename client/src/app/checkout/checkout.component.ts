@@ -9,6 +9,7 @@ import { CheckoutSuccessComponent } from './checkout-success/checkout-success.co
 import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';
 import { CheckoutProvisionComponent } from './checkout-provision/checkout-provision.component';
 import { CheckoutAddressComponent } from './checkout-address/checkout-address.component';
+import { BasketService } from '../basket/basket.service';
 
 @Component({
   selector: 'app-checkout',
@@ -20,11 +21,12 @@ import { CheckoutAddressComponent } from './checkout-address/checkout-address.co
 export class CheckoutComponent implements OnInit {
   checkoutForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private accountService: AccountService) { }
+  constructor(private fb: FormBuilder, private accountService: AccountService, private basketService: BasketService) { }
 
   ngOnInit() {
     this.createCheckoutForm();
     this.getAddressFormValues();
+    this.getServiceProvisionValue();
     console.log(this.checkoutForm);  // Check if the form is created correctly
   }
 
@@ -56,6 +58,15 @@ export class CheckoutComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  getServiceProvisionValue() {
+    const basket = this.basketService.getCurrentBasketValue();
+    if (basket.serviceProvisionId !== null) {
+      this.checkoutForm.get('serviceProvisionForm')?.get('serviceProvision')?.
+        patchValue(basket.serviceProvisionId?.toString());
+    }
+
   }
 
 

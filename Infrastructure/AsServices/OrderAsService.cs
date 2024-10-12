@@ -15,12 +15,15 @@ namespace Infrastructure.AsServices
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBasketRepository _basketRepo;
+        private readonly IPaymentAsService _paymentAsService;
 
-        public OrderAsService(IUnitOfWork unitOfWork, IBasketRepository basketRepo) 
+        public OrderAsService(IUnitOfWork unitOfWork, IBasketRepository basketRepo,
+            IPaymentAsService paymentAsService) 
         
         {
             _unitOfWork = unitOfWork;
             _basketRepo = basketRepo;
+            _paymentAsService = paymentAsService;
         }
 
         public async Task<Order> CreateOrderAsync(string buyerEmail, int serviceProvisionId, string basketId, Address address)
@@ -51,7 +54,19 @@ namespace Infrastructure.AsServices
                 throw new Exception($"Service provision with ID {serviceProvisionId} not found.");
             }
             var subtotal = items.Sum(item => item.Price * item.Quantity);
-            var order = new Order(items, buyerEmail, address, serviceProvision, subtotal);
+
+            var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
+
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if (existingOrder != null)
+            {
+                _unitOfWork.Repository<Order>().Delete(existingOrder);
+
+                await _paymentAsService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
+            }
+
+            var order = new Order(items, buyerEmail, address, serviceProvision, subtotal, basket.PaymentIntentId);
 
             _unitOfWork.Repository<Order>().Add(order);
 
@@ -59,7 +74,6 @@ namespace Infrastructure.AsServices
 
             if (result <= 0) return null;
 
-            await _basketRepo.DeleteBasketAsync(basketId);
 
             return order;
 

@@ -19,19 +19,33 @@ export class BasketService {
   
   constructor(private http: HttpClient) { }
 
+  createPaymentIntent() {
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrentBasketValue().id, {}).pipe(
+      map((basket: IBasket | any) => {
+        this.basketSource.next(basket);
+        console.log(this.getCurrentBasketValue());
+      })
+    );
+  }
+
+
+
   setExtraCharge(serviceProvision: IServiceProvision) {
     this.extraCharge = serviceProvision.extraCharge;
+    const basket = this.getCurrentBasketValue();
+    basket.serviceProvisionId = serviceProvision.id;
+    basket.extraCharge = serviceProvision.extraCharge;
     this.calculateTotals();
+    this.setBasket(basket);
   }
 
   getBasket(id: string) {
-    //console.log('Basket ID:', id); 
-    return this.http.get<IBasket>(this.baseUrl + 'basket?id=' + id) // Specify expected type here
-    //return this.http.get<IBasket>(this.baseUrl + 'basket?id=krishna')  // Replace 12345 with your valid ID
 
-      .pipe(
+    return this.http.get<IBasket>(this.baseUrl + 'basket?id=' + id) // Specify expected type here
+        .pipe(
         map((basket) => {
           this.basketSource.next(basket);
+          this.extraCharge = basket.extraCharge ?? 0;
           this.calculateTotals();
         }),
         catchError((error) => {
@@ -44,11 +58,11 @@ export class BasketService {
   }
 
   setBasket(basket: IBasket) {
-    console.log('Posting basket:', basket);
-    if (!basket.id) {
-      console.error('Basket ID is empty, cannot post basket.');
-      return;
-    }
+    //console.log('Posting basket:', basket);
+    //if (!basket.id) {
+    //  console.error('Basket ID is empty, cannot post basket.');
+    //  return;
+    //}
     return this.http.post<IBasket>(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
       this.basketSource.next(response);
       this.calculateTotals();

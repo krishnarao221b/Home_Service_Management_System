@@ -7,6 +7,7 @@ import { LoginComponent } from '../login/login.component';
 import { TextInputComponent } from '../../shared/components/text-input/text-input.component';
 import { Observable, of, timer } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators'; // Importing operators
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errors: string[] = [];
 
-  constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router) { }
+  constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router, private toastr: ToastrService,) { }
 
   ngOnInit() {
     this.createRegisterForm();
@@ -42,6 +43,7 @@ export class RegisterComponent implements OnInit {
       error => {
         console.log(error);
         this.errors = error.errors || [];
+        this.toastr.error('1 Uppercase, 1 Lowercase, 1 Special, 1 Number, Min 6');
       }
     );
   }
