@@ -24,6 +24,7 @@ export class OrdersComponent implements OnInit {
     this.ordersService.getOrdersForUser().subscribe(
       (orders: IOrder[] | any) => {
         this.orders = orders;
+        this.orders.reverse();
       },
       error => {
         console.log(error);

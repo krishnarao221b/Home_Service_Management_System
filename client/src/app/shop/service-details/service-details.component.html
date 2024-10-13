@@ -1,21 +1,25 @@
 <div class="row" *ngIf="service">
-  <div class="col-6">
+  <div class="col-md-6">
     <img src="{{service.pictureUrl}}" alt="{{service.name}}" class="img-fluid w-100">
   </div>
-  <div class="col-6">
+  
+  <div class="col-md-6 d-flex flex-column">
     <h3>{{service.name}}</h3>
-    <p style = "font-size: 1.5em;">{{service.price | currency : 'DKK '}}</p>
-    <div class = "d-flex justify-content-start align-items-center">
+    <p style="font-size: 1.5em;">{{service.price | currency : 'DKK '}}/Hour</p>
+
+    <div class="d-flex justify-content-start align-items-center mb-4">
       <i (click)="decrementQuantity()" class="fa fa-minus-circle text-warning mr-2" style="cursor: pointer; font-size: 2em;"></i>
-      <span class="font-weight-bold" style="font-size: 1.5em;" >{{quantity}}</span>
+      <span class="font-weight-bold" style="font-size: 1.5em;">{{quantity}}</span>
       <i (click)="incrementQuantity()" class="fa fa-plus-circle text-warning mx-2" style="cursor: pointer; font-size: 2em;"></i>
-      <button (click)="addItemToBasket()" class="btn btn-outline-primary btn-lg  ml-4">Add to Cart</button>
+      <button (click)="addItemToBasket()" class="btn btn-outline-primary btn-lg ml-4">Add to Cart</button>
     </div>
-  </div>
-  <div class="row mt-5">
-    <div class="col-12 ml-3">
+
+    <!-- Add flex-grow to push the description down under the controls -->
+    <div class="mt-4 flex-grow-1">
       <h4>Description</h4>
-      <p>{{service.description}}</p>
+      <ul>
+        <li *ngFor="let point of descriptionPoints">{{ point.trim() }}</li>
+      </ul>
     </div>
   </div>
 </div>

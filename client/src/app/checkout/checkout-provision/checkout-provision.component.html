@@ -9,7 +9,7 @@
                 formControlName="serviceProvision"
                 class="custom-control-input">
             <label for="{{method.id}}" class="custom-control-label">
-                <strong>{{method.serviceDate}} - {{method.extraCharge | currency}}</strong>
+                <strong>{{method.serviceDate}} - {{method.extraCharge | currency : 'DKK '}}</strong>
                 <br>
                 <span class="label-description">{{method.description}}</span>
             </label>

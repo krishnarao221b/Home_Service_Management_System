@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errors: string[] = [];
 
-  constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router, private toastr: ToastrService,) { }
+  constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.createRegisterForm();
@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
       error => {
         console.log(error);
         this.errors = error.errors || [];
-        this.toastr.error('1 Uppercase, 1 Lowercase, 1 Special, 1 Number, Min 6');
+        this.toastr.error('1 Upper, 1 Lower, 1 Special, 1 Number, Minimum 6');
       }
     );
   }

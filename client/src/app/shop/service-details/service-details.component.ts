@@ -11,16 +11,20 @@ import { BasketService } from '../../basket/basket.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './service-details.component.html',
-  styleUrl: './service-details.component.scss'
+  styleUrls: ['./service-details.component.scss']
 })
 export class ServiceDetailsComponent implements OnInit {
   service!: IService;
   quantity = 1;
+  descriptionPoints: string[] = [];
 
-  constructor(private shopService: ShopService, private activateRoute: ActivatedRoute,
-    private bcService: BreadcrumbService, private basketService: BasketService
+  constructor(
+    private shopService: ShopService,
+    private activateRoute: ActivatedRoute,
+    private bcService: BreadcrumbService,
+    private basketService: BasketService
   ) {
-    this.bcService.set('@serviceDetails','');
+    this.bcService.set('@serviceDetails', '');
   }
 
   ngOnInit() {
@@ -41,17 +45,15 @@ export class ServiceDetailsComponent implements OnInit {
     }
   }
 
-
-
   loadService() {
-    // Subscribe to paramMap to get the route parameter 'id'
     this.activateRoute.paramMap.subscribe(params => {
-      const id = params.get('id'); // Get 'id' from route
+      const id = params.get('id');
       if (id) {
-        // Call getService with the parsed id
         this.shopService.getService(+id).subscribe(service => {
           this.service = service;
           this.bcService.set('@serviceDetails', service.name);
+          // Split the description by commas
+          this.descriptionPoints = this.service.description.split(';');
         }, error => {
           console.log(error);
         });
