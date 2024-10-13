@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
@@ -83,12 +84,25 @@ public class Program
         app.UseRouting();
         app.UseStaticFiles();
 
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Content")
+            ),
+            RequestPath = "/content"
+        });
+
         app.UseCors("CorsPolicy");
 
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.MapControllers();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapFallbackToController("Index", "Fallback");
+        });
+        
 
         await MigrateDatabaseAsync(app);
 

@@ -7,6 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Content\images\services2\imagedata.js" />
+    <Content Include="Content\images\services\carpet_cleaning.png" />
+    <Content Include="Content\images\services\cleaning.png" />
+    <Content Include="Content\images\services\elderly_care.png" />
+    <Content Include="Content\images\services\electrician.png" />
+    <Content Include="Content\images\services\grocery_delivery.png" />
+    <Content Include="Content\images\services\hair_styling.png" />
+    <Content Include="Content\images\services\handyman.png" />
+    <Content Include="Content\images\services\Home1.png" />
+    <Content Include="Content\images\services\Home2.png" />
+    <Content Include="Content\images\services\Home3.png" />
+    <Content Include="Content\images\services\makeup_application.png" />
+    <Content Include="Content\images\services\massage_therapy.png" />
+    <Content Include="Content\images\services\moving.png" />
+    <Content Include="Content\images\services\nail_care.png" />
+    <Content Include="Content\images\services\personal_training.png" />
+    <Content Include="Content\images\services\plumbing.png" />
+    <Content Include="Content\images\services\taxi_service.png" />
+    <Content Include="Content\images\services\window_cleaning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -29,6 +51,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
