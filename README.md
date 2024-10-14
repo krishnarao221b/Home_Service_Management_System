@@ -41,6 +41,3 @@ The system follows a layered architecture, consisting of:
 - **API Layer**: ASP.NET Core Web API handling service requests.
 - **Core Layer**: Business logic and domain entities.
 - **Infrastructure Layer**: Database access and repository pattern implementation.
-
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
